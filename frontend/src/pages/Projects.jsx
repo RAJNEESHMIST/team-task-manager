@@ -16,9 +16,10 @@ const Projects = () => {
   const fetchProjects = async () => {
     try {
       const res = await api.get('/projects');
-      setProjects(res.data);
+      setProjects(Array.isArray(res.data) ? res.data : []);
     } catch (error) {
       console.error('Error fetching projects', error);
+      setProjects([]);
     } finally {
       setLoading(false);
     }
@@ -100,14 +101,14 @@ const Projects = () => {
                   
                   <div className="relative z-10 flex-1">
                     <div className="w-12 h-12 bg-slate-50 border border-slate-100 rounded-xl flex items-center justify-center mb-5 group-hover:bg-indigo-50 group-hover:border-indigo-100 transition-colors">
-                      <span className="text-xl font-bold text-slate-400 group-hover:text-indigo-600 uppercase transition-colors">{project.name.substring(0, 2)}</span>
+                      <span className="text-xl font-bold text-slate-400 group-hover:text-indigo-600 uppercase transition-colors">{project.name?.substring(0, 2) || 'PR'}</span>
                     </div>
-                    <h3 className="text-lg font-bold text-slate-800 mb-1 group-hover:text-indigo-700 transition-colors">{project.name}</h3>
+                    <h3 className="text-lg font-bold text-slate-800 mb-1 group-hover:text-indigo-700 transition-colors">{project.name || 'Untitled Project'}</h3>
                     <p className="text-xs font-medium text-slate-400 mt-4 flex items-center">
                       <svg xmlns="http://www.w3.org/2000/svg" className="h-3.5 w-3.5 mr-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                       </svg>
-                      Created {new Date(project.createdAt).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })}
+                      {project.createdAt ? `Created ${new Date(project.createdAt).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })}` : 'Creation date unknown'}
                     </p>
                   </div>
                   <div className="relative z-10 mt-6 pt-4 border-t border-slate-100 flex items-center text-indigo-600 text-sm font-semibold opacity-0 group-hover:opacity-100 transition-opacity duration-300 transform translate-y-2 group-hover:translate-y-0">

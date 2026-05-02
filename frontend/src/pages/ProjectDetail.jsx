@@ -94,16 +94,18 @@ const ProjectDetail = () => {
         api.get('/users')
       ]);
       setProject(projRes.data);
-      setTasks(tasksRes.data);
-      setMembers(membersRes.data);
+      setTasks(Array.isArray(tasksRes.data) ? tasksRes.data : []);
+      setMembers(Array.isArray(membersRes.data) ? membersRes.data : []);
       
       // Combine project members and all known users to ensure no one is missed
-      const projectMemberEmails = membersRes.data.map(m => m.userEmail);
-      const allKnownEmails = usersRes.data;
+      const projectMemberEmails = Array.isArray(membersRes.data) ? membersRes.data.map(m => m.userEmail) : [];
+      const allKnownEmails = Array.isArray(usersRes.data) ? usersRes.data : [];
       const combinedUniqueUsers = [...new Set([...projectMemberEmails, ...allKnownEmails])];
       setAllUsers(combinedUniqueUsers);
     } catch (error) {
       console.error('Error fetching project data', error);
+      setTasks([]);
+      setMembers([]);
     } finally {
       setLoading(false);
     }
@@ -271,7 +273,7 @@ const ProjectDetail = () => {
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                 </svg>
-                Created on {new Date(project.createdAt).toLocaleDateString()}
+                Created on {project.createdAt ? new Date(project.createdAt).toLocaleDateString() : 'Unknown'}
               </p>
             </div>
             {(project.createdBy === user?.email || appUser?.role === 'GLOBAL_ADMIN') && (
