@@ -35,7 +35,8 @@ const Projects = () => {
       fetchProjects();
     } catch (error) {
       console.error('Error creating project', error);
-      alert('Failed to create project');
+      const msg = error.response?.data?.message || error.message || 'Server unreachable';
+      alert(`Failed to create project: ${msg}`);
     }
   };
 

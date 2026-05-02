@@ -20,7 +20,10 @@ export const AuthProvider = ({ children }) => {
           setIsRestricted(true);
         }
       } catch (err) {
-        console.error("Failed to fetch app user", err);
+        console.error("❌ Failed to fetch app user profile from backend:", err.message);
+        if (err.code === 'ERR_NETWORK') {
+          console.error("🌐 Network Error: The backend might be down or VITE_API_URL is incorrect.");
+        }
       }
     } else {
       localStorage.removeItem('jwt');
