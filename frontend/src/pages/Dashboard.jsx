@@ -113,20 +113,22 @@ const Dashboard = () => {
   return (
     <div className="min-h-screen bg-slate-50 pb-12">
       <Navbar />
-      <div className="bg-slate-900 h-64 w-full absolute top-0 z-0"></div>
       
-      <main className="max-w-7xl mx-auto px-4 md:px-6 pt-8 space-y-8 relative z-10 mt-16">
-        
-        <div className="mb-8 flex flex-col md:flex-row justify-between items-start md:items-end gap-6">
+      {/* Responsive Header Background */}
+      <div className="bg-slate-900 pt-16 pb-32 px-4 md:px-6 -mt-[1px]">
+        <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-start md:items-end gap-10">
           <div className="max-w-xl">
-            <h2 className="text-3xl md:text-4xl font-bold text-white tracking-tight leading-tight">Dashboard Analytics</h2>
-            <p className="text-indigo-200 mt-3 text-sm md:text-base leading-relaxed">Track your workload and delegated tasks efficiently.</p>
+            <h2 className="text-3xl md:text-5xl font-extrabold text-white tracking-tight leading-tight">Dashboard Analytics</h2>
+            <p className="text-indigo-200 mt-4 text-sm md:text-lg font-medium opacity-90 leading-relaxed">Track your workload and delegated tasks efficiently.</p>
           </div>
-          <div className="w-full md:w-auto bg-white/10 backdrop-blur-md px-6 py-4 rounded-2xl border border-white/20 text-white flex flex-col items-center md:items-end shadow-xl">
-            <p className="text-[10px] font-bold text-indigo-200 uppercase tracking-[0.2em] mb-1">Total Ecosystem Tasks</p>
-            <p className="text-4xl font-extrabold">{data.totalTasks}</p>
+          <div className="w-full md:w-auto bg-white/10 backdrop-blur-md px-8 py-6 rounded-3xl border border-white/20 text-white flex flex-col items-center md:items-end shadow-2xl shadow-slate-950/20">
+            <p className="text-[10px] font-bold text-indigo-300 uppercase tracking-[0.25em] mb-2">Total Platform Tasks</p>
+            <p className="text-5xl font-black">{data.totalTasks}</p>
           </div>
         </div>
+      </div>
+      
+      <main className="max-w-7xl mx-auto px-4 md:px-6 -mt-16 space-y-8 relative z-10">
 
         {/* Charts Section */}
         <section className="grid grid-cols-1 md:grid-cols-2 gap-6">

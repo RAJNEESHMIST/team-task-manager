@@ -1,7 +1,9 @@
 import axios from 'axios';
 
 let baseURL = import.meta.env.VITE_API_URL || 'http://localhost:8080';
-if (baseURL && !baseURL.startsWith('http') && !baseURL.includes('localhost')) {
+// Force HTTPS for any production URL (non-localhost)
+if (baseURL && !baseURL.includes('localhost') && !baseURL.startsWith('https://')) {
+  baseURL = baseURL.replace('http://', '').replace('https://', '');
   baseURL = `https://${baseURL}`;
 }
 
