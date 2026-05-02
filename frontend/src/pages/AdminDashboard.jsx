@@ -69,10 +69,10 @@ const AdminDashboard = () => {
   return (
     <div className="min-h-screen bg-slate-50 pb-12">
       <Navbar />
-      <main className="max-w-6xl mx-auto px-6 pt-8">
+      <main className="max-w-6xl mx-auto px-4 md:px-6 pt-8">
         <div className="mb-8">
-          <h1 className="text-3xl font-extrabold text-slate-900 tracking-tight">Admin Hub</h1>
-          <p className="text-slate-500 mt-2">Manage users, permissions, and system-wide settings.</p>
+          <h1 className="text-3xl md:text-4xl font-extrabold text-slate-900 tracking-tight">Admin Hub</h1>
+          <p className="text-slate-500 mt-2 text-sm md:text-base">Manage users, permissions, and system-wide settings.</p>
         </div>
 
         <div className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">

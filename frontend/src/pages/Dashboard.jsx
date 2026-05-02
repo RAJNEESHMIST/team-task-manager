@@ -115,16 +115,16 @@ const Dashboard = () => {
       <Navbar />
       <div className="bg-slate-900 h-64 w-full absolute top-0 z-0"></div>
       
-      <main className="max-w-7xl mx-auto px-6 pt-8 space-y-8 relative z-10 mt-16">
+      <main className="max-w-7xl mx-auto px-4 md:px-6 pt-8 space-y-8 relative z-10 mt-16">
         
-        <div className="mb-8 flex justify-between items-end">
-          <div>
-            <h2 className="text-3xl font-bold text-white tracking-tight">Dashboard Analytics</h2>
-            <p className="text-indigo-200 mt-2">Track your workload and delegated tasks efficiently.</p>
+        <div className="mb-8 flex flex-col md:flex-row justify-between items-start md:items-end gap-6">
+          <div className="max-w-xl">
+            <h2 className="text-3xl md:text-4xl font-bold text-white tracking-tight leading-tight">Dashboard Analytics</h2>
+            <p className="text-indigo-200 mt-3 text-sm md:text-base leading-relaxed">Track your workload and delegated tasks efficiently.</p>
           </div>
-          <div className="bg-white/10 backdrop-blur-md px-6 py-3 rounded-2xl border border-white/20 text-white text-center">
-            <p className="text-sm font-medium text-indigo-200 uppercase tracking-wider">Total Ecosystem Tasks</p>
-            <p className="text-3xl font-bold">{data.totalTasks}</p>
+          <div className="w-full md:w-auto bg-white/10 backdrop-blur-md px-6 py-4 rounded-2xl border border-white/20 text-white flex flex-col items-center md:items-end shadow-xl">
+            <p className="text-[10px] font-bold text-indigo-200 uppercase tracking-[0.2em] mb-1">Total Ecosystem Tasks</p>
+            <p className="text-4xl font-extrabold">{data.totalTasks}</p>
           </div>
         </div>
 
@@ -178,29 +178,29 @@ const Dashboard = () => {
 
         {/* Filters and Tabs */}
         <section className="bg-white rounded-2xl p-4 shadow-sm border border-slate-200 mt-8">
-          <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+          <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center gap-6">
             
             {/* Tabs */}
-            <div className="flex p-1 bg-slate-100 rounded-xl">
+            <div className="flex p-1 bg-slate-100 rounded-xl w-full lg:w-auto">
               <button 
                 onClick={() => setActiveTab('assignedToMe')}
-                className={`px-6 py-2.5 rounded-lg text-sm font-semibold transition-all ${activeTab === 'assignedToMe' ? 'bg-white text-indigo-700 shadow-sm' : 'text-slate-500 hover:text-slate-700'}`}
+                className={`flex-1 lg:flex-none px-4 md:px-6 py-2.5 rounded-lg text-xs md:text-sm font-bold transition-all ${activeTab === 'assignedToMe' ? 'bg-white text-indigo-700 shadow-sm' : 'text-slate-500 hover:text-slate-700'}`}
               >
                 Assigned to Me ({data.totalAssignedToMe})
               </button>
               <button 
                 onClick={() => setActiveTab('assignedToOthers')}
-                className={`px-6 py-2.5 rounded-lg text-sm font-semibold transition-all ${activeTab === 'assignedToOthers' ? 'bg-white text-indigo-700 shadow-sm' : 'text-slate-500 hover:text-slate-700'}`}
+                className={`flex-1 lg:flex-none px-4 md:px-6 py-2.5 rounded-lg text-xs md:text-sm font-bold transition-all ${activeTab === 'assignedToOthers' ? 'bg-white text-indigo-700 shadow-sm' : 'text-slate-500 hover:text-slate-700'}`}
               >
                 I Assigned ({data.totalAssignedToOthers})
               </button>
             </div>
 
             {/* Filters */}
-            <div className="flex flex-wrap gap-3 w-full md:w-auto">
+            <div className="grid grid-cols-2 md:flex md:flex-wrap gap-2 w-full lg:w-auto">
               <select 
                 value={statusFilter} onChange={(e) => setStatusFilter(e.target.value)}
-                className="bg-slate-50 border border-slate-200 text-slate-700 text-sm rounded-xl focus:ring-indigo-500 focus:border-indigo-500 block p-2.5 outline-none font-medium"
+                className="bg-slate-50 border border-slate-200 text-slate-700 text-xs md:text-sm rounded-xl focus:ring-indigo-500 focus:border-indigo-500 block p-2.5 outline-none font-bold"
               >
                 <option value="ALL">All Status</option>
                 <option value="TODO">To Do</option>
@@ -209,7 +209,7 @@ const Dashboard = () => {
               </select>
               <select 
                 value={priorityFilter} onChange={(e) => setPriorityFilter(e.target.value)}
-                className="bg-slate-50 border border-slate-200 text-slate-700 text-sm rounded-xl focus:ring-indigo-500 focus:border-indigo-500 block p-2.5 outline-none font-medium"
+                className="bg-slate-50 border border-slate-200 text-slate-700 text-xs md:text-sm rounded-xl focus:ring-indigo-500 focus:border-indigo-500 block p-2.5 outline-none font-bold"
               >
                 <option value="ALL">All Priority</option>
                 <option value="HIGH">High</option>
@@ -218,7 +218,7 @@ const Dashboard = () => {
               </select>
               <select 
                 value={dateSort} onChange={(e) => setDateSort(e.target.value)}
-                className="bg-slate-50 border border-slate-200 text-slate-700 text-sm rounded-xl focus:ring-indigo-500 focus:border-indigo-500 block p-2.5 outline-none font-medium"
+                className="col-span-2 md:col-span-1 bg-slate-50 border border-slate-200 text-slate-700 text-xs md:text-sm rounded-xl focus:ring-indigo-500 focus:border-indigo-500 block p-2.5 outline-none font-bold"
               >
                 <option value="ASC">Earliest Due</option>
                 <option value="DESC">Latest Due</option>

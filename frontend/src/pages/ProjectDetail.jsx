@@ -254,51 +254,51 @@ const ProjectDetail = () => {
   return (
     <div className="min-h-screen bg-slate-50 pb-12 relative">
       <Navbar />
-      <main className="max-w-7xl mx-auto px-6 pt-8">
+      <main className="max-w-7xl mx-auto px-4 md:px-6 pt-8">
         
         {/* Header Section */}
-        <div className="bg-white rounded-2xl p-8 shadow-sm border border-slate-200 mb-8 relative overflow-hidden">
+        <div className="bg-white rounded-3xl p-6 md:p-10 shadow-sm border border-slate-200 mb-8 relative overflow-hidden">
           <div className="absolute top-0 right-0 w-64 h-64 bg-indigo-50 rounded-bl-full opacity-50 pointer-events-none"></div>
           
-          <div className="relative z-10 flex flex-col md:flex-row justify-between items-start md:items-center gap-6">
-            <div>
-              <Link to="/projects" className="inline-flex items-center text-sm font-medium text-slate-500 hover:text-indigo-600 transition-colors mb-3">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <div className="relative z-10 flex flex-col lg:flex-row justify-between items-start lg:items-center gap-8">
+            <div className="w-full">
+              <Link to="/projects" className="inline-flex items-center text-xs font-bold text-slate-400 hover:text-indigo-600 transition-colors mb-4 uppercase tracking-widest">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
                 </svg>
-                Back to Projects
+                Projects
               </Link>
-              <h1 className="text-4xl font-extrabold text-slate-900 tracking-tight">{project.name}</h1>
-              <p className="text-slate-500 mt-2 flex items-center text-sm">
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <h1 className="text-3xl md:text-5xl font-extrabold text-slate-900 tracking-tight leading-tight">{project.name}</h1>
+              <p className="text-slate-500 mt-4 flex items-center text-sm font-medium">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-2 text-indigo-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
                 </svg>
                 Created on {project.createdAt ? new Date(project.createdAt).toLocaleDateString() : 'Unknown'}
               </p>
             </div>
             {(project.createdBy === user?.email || appUser?.role === 'GLOBAL_ADMIN') && (
-              <div className="flex flex-wrap gap-3">
+              <div className="flex flex-col sm:flex-row flex-wrap gap-3 w-full lg:w-auto">
                 <button 
                   onClick={handleDeleteProject}
-                  className="flex items-center px-4 py-2 bg-red-50 text-red-600 font-medium rounded-xl hover:bg-red-100 border border-red-100 transition-colors shadow-sm"
+                  className="flex-1 sm:flex-none flex items-center justify-center px-5 py-3 bg-red-50 text-red-600 font-bold rounded-xl hover:bg-red-500 hover:text-white border border-red-100 transition-all shadow-sm"
                 >
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                   </svg>
-                  Delete Project
+                  Delete
                 </button>
                 <button 
                   onClick={() => setShowMemberModal(true)}
-                  className="flex items-center px-4 py-2 bg-white border border-slate-300 text-slate-700 font-medium rounded-xl hover:bg-slate-50 transition-colors shadow-sm"
+                  className="flex-1 sm:flex-none flex items-center justify-center px-5 py-3 bg-white border border-slate-300 text-slate-700 font-bold rounded-xl hover:bg-slate-50 transition-all shadow-sm"
                 >
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-2 text-slate-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
                   </svg>
-                  Invite Member
+                  Invite
                 </button>
                 <button 
                   onClick={() => setShowTaskModal(true)}
-                  className="flex items-center px-4 py-2 bg-gradient-primary rounded-xl font-medium"
+                  className="flex-1 sm:flex-none flex items-center justify-center px-6 py-3 bg-gradient-primary rounded-xl font-bold shadow-lg shadow-indigo-200"
                 >
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />

@@ -54,15 +54,15 @@ const Projects = () => {
       <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-indigo-100/50 rounded-full mix-blend-multiply filter blur-3xl opacity-70 z-0"></div>
 
       <Navbar />
-      <main className="max-w-7xl mx-auto px-6 pt-12 relative z-10">
-        <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-10 gap-4">
+      <main className="max-w-7xl mx-auto px-4 md:px-6 pt-12 relative z-10">
+        <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-10 gap-6">
           <div>
-            <h2 className="text-3xl font-bold text-slate-900 tracking-tight">Your Projects</h2>
-            <p className="text-slate-500 mt-2">Manage and monitor all your team workspaces.</p>
+            <h2 className="text-3xl md:text-4xl font-bold text-slate-900 tracking-tight">Your Projects</h2>
+            <p className="text-slate-500 mt-2 text-sm md:text-base">Manage and monitor all your team workspaces.</p>
           </div>
           <button 
             onClick={() => setShowModal(true)}
-            className="flex items-center px-5 py-2.5 bg-slate-900 text-white rounded-xl hover:bg-slate-800 transition-all shadow-md hover:shadow-lg font-medium tracking-wide group"
+            className="w-full md:w-auto flex items-center justify-center px-6 py-3 bg-slate-900 text-white rounded-xl hover:bg-slate-800 transition-all shadow-lg font-bold tracking-wide group"
           >
             <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2 group-hover:rotate-90 transition-transform duration-300" viewBox="0 0 20 20" fill="currentColor">
               <path fillRule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clipRule="evenodd" />
