@@ -117,6 +117,7 @@ const ProjectDetail = () => {
       await api.post('/tasks', { ...newTask, projectId: id });
       setShowTaskModal(false);
       setNewTask({ title: '', description: '', assignedTo: '', dueDate: '', priority: 'MEDIUM' });
+      alert('Congratulations! You created task under project successfully.');
       fetchProjectData();
     } catch (error) {
       console.error('Error creating task', error);
@@ -124,15 +125,33 @@ const ProjectDetail = () => {
     }
   };
 
+  const [confirmDelete, setConfirmDelete] = useState({ type: null, id: null });
+
   const handleDeleteProject = async () => {
-    if (window.confirm('Are you sure you want to delete this project? This will permanently delete all tasks associated with it.')) {
-      try {
-        await api.delete(`/projects/${id}`);
-        navigate('/dashboard');
-      } catch (error) {
-        console.error('Error deleting project', error);
-        alert('Failed to delete project');
-      }
+    console.log("Delete project button clicked");
+    try {
+      await api.delete(`/projects/${id}`);
+      alert('Project and tasks under this deleted successfully.');
+      navigate('/dashboard');
+    } catch (error) {
+      console.error('Error deleting project', error);
+      alert('Failed to delete project. Make sure you are the project creator or global admin.');
+    } finally {
+      setConfirmDelete({ type: null, id: null });
+    }
+  };
+
+  const handleDeleteTask = async (taskId) => {
+    console.log("Delete task button clicked", taskId);
+    try {
+      await api.delete(`/tasks/${taskId}`);
+      alert('Task deleted successfully.');
+      fetchProjectData();
+    } catch (error) {
+      console.error('Error deleting task', error);
+      alert('Failed to delete task. Make sure you are the task creator or admin.');
+    } finally {
+      setConfirmDelete({ type: null, id: null });
     }
   };
 
@@ -164,10 +183,11 @@ const ProjectDetail = () => {
     if (window.confirm('Are you sure you want to delete this task?')) {
       try {
         await api.delete(`/tasks/${taskId}`);
+        alert('Task deleted successfully.');
         fetchProjectData();
       } catch (error) {
         console.error('Error deleting task', error);
-        alert('Failed to delete task');
+        alert('Failed to delete task. Make sure you are the task creator or admin.');
       }
     }
   };
@@ -279,7 +299,7 @@ const ProjectDetail = () => {
             {(project.createdBy === user?.email || appUser?.role === 'GLOBAL_ADMIN') && (
               <div className="flex flex-col sm:flex-row flex-wrap gap-3 w-full lg:w-auto">
                 <button 
-                  onClick={handleDeleteProject}
+                  onClick={() => setConfirmDelete({ type: 'PROJECT', id: id })}
                   className="flex-1 sm:flex-none flex items-center justify-center px-5 py-3 bg-red-50 text-red-600 font-bold rounded-xl hover:bg-red-500 hover:text-white border border-red-100 transition-all shadow-sm"
                 >
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -391,7 +411,7 @@ const ProjectDetail = () => {
                           </svg>
                           Edit
                         </button>
-                        <button onClick={() => handleDeleteTask(task.id)} className="flex items-center px-3 py-1.5 text-xs font-semibold text-red-600 hover:text-white hover:bg-red-500 rounded-lg transition-colors border border-red-200 hover:border-red-500">
+                        <button onClick={() => setConfirmDelete({ type: 'TASK', id: task.id })} className="flex items-center px-3 py-1.5 text-xs font-semibold text-red-600 hover:text-white hover:bg-red-500 rounded-lg transition-colors border border-red-200 hover:border-red-500">
                           <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3 mr-1.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
                           </svg>
@@ -568,6 +588,40 @@ const ProjectDetail = () => {
                   <button type="submit" className="px-6 py-2.5 bg-slate-900 text-white hover:bg-slate-800 rounded-xl font-medium shadow-md transition-colors">Send Invite</button>
                 </div>
               </form>
+            </div>
+          </div>
+        )}
+
+        {/* Confirmation Modal */}
+        {confirmDelete.type && (
+          <div className="fixed inset-0 bg-slate-900/60 backdrop-blur-md flex items-center justify-center p-4 z-[100] animate-in fade-in duration-300">
+            <div className="bg-white rounded-3xl p-8 w-full max-w-sm shadow-2xl animate-in zoom-in-95 duration-200">
+              <div className="w-16 h-16 bg-red-100 text-red-600 rounded-full flex items-center justify-center mb-6 mx-auto">
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                </svg>
+              </div>
+              <h3 className="text-xl font-bold text-slate-800 text-center mb-2">Are you absolutely sure?</h3>
+              <p className="text-sm text-slate-500 text-center mb-8">
+                {confirmDelete.type === 'PROJECT' 
+                  ? "This will permanently delete the project and all associated tasks. This action cannot be undone."
+                  : "This task will be permanently removed from your project."
+                }
+              </p>
+              <div className="flex flex-col gap-3">
+                <button 
+                  onClick={() => confirmDelete.type === 'PROJECT' ? handleDeleteProject() : handleDeleteTask(confirmDelete.id)}
+                  className="w-full py-3 bg-red-600 text-white font-bold rounded-xl hover:bg-red-700 transition-colors shadow-lg shadow-red-100"
+                >
+                  Yes, Delete {confirmDelete.type === 'PROJECT' ? 'Project' : 'Task'}
+                </button>
+                <button 
+                  onClick={() => setConfirmDelete({ type: null, id: null })}
+                  className="w-full py-3 bg-slate-100 text-slate-600 font-bold rounded-xl hover:bg-slate-200 transition-colors"
+                >
+                  Cancel
+                </button>
+              </div>
             </div>
           </div>
         )}

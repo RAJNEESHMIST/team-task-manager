@@ -32,6 +32,7 @@ const Projects = () => {
       await api.post('/projects', { name: newProjectName });
       setNewProjectName('');
       setShowModal(false);
+      alert('Congratulations! You created project successfully.');
       fetchProjects();
     } catch (error) {
       console.error('Error creating project', error);

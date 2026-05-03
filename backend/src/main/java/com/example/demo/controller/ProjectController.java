@@ -140,15 +140,16 @@ public class ProjectController {
                     .orElseThrow(() -> new RuntimeException("Access Denied"));
                     
             if (!"ADMIN".equals(adminMember.getRole())) {
-                throw new RuntimeException("Only ADMIN can delete a project");
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Only ADMIN can delete a project");
             }
         }
         
+        System.out.println("Deleting project: " + id);
         // Cascade delete
         taskRepository.deleteByProjectId(id);
         projectMemberRepository.deleteByProjectId(id);
         projectRepository.deleteById(id);
         
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok("Project and tasks deleted successfully");
     }
 }

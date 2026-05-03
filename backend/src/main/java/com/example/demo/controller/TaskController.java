@@ -47,9 +47,10 @@ public class TaskController {
 
         // Verify ADMIN
         ProjectMember member = projectMemberRepository.findByProjectIdAndUserEmail(projectId, email)
-                .orElseThrow(() -> new RuntimeException("Access Denied"));
-        if (!"ADMIN".equals(member.getRole())) {
-            throw new RuntimeException("Only ADMIN can create tasks");
+                .orElse(null);
+        if (member == null || !"ADMIN".equals(member.getRole())) {
+            System.err.println("Task creation denied for user: " + email + " on project: " + projectId);
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
 
         Task task = new Task();
@@ -141,10 +142,11 @@ public class TaskController {
         }
         
         if (!isAdmin && !isCreator) {
-            throw new RuntimeException("Access Denied");
+            System.err.println("Task deletion denied for user: " + email + " on task: " + id);
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
         }
         
         taskRepository.delete(task);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok("Task deleted successfully");
     }
 }
