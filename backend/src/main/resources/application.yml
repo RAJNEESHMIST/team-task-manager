@@ -3,7 +3,9 @@ spring:
     url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://db.kcrkfpehhvnaokbiawtc.supabase.co:5432/postgres?sslmode=require}
     username: ${SPRING_DATASOURCE_USERNAME:postgres}
     password: ${SPRING_DATASOURCE_PASSWORD:Chemm@saini}
+    driver-class-name: org.postgresql.Driver
   jpa:
+    database-platform: ${SPRING_JPA_DATABASE_PLATFORM:org.hibernate.dialect.PostgreSQLDialect}
     hibernate:
       ddl-auto: update
     show-sql: true

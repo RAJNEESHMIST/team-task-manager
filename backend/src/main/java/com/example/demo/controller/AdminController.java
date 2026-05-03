@@ -1,9 +1,12 @@
 package com.example.demo.controller;
 
+import com.example.demo.dto.AdminStatsResponse;
 import com.example.demo.model.AppUser;
 import com.example.demo.model.Project;
+import com.example.demo.model.Task;
 import com.example.demo.repository.AppUserRepository;
 import com.example.demo.repository.ProjectRepository;
+import com.example.demo.repository.TaskRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -23,6 +26,9 @@ public class AdminController {
 
     @Autowired
     private ProjectRepository projectRepository;
+
+    @Autowired
+    private TaskRepository taskRepository;
 
     private String getEmailFromJwt(Jwt jwt) {
         return jwt.getClaimAsString("email");
@@ -67,5 +73,29 @@ public class AdminController {
     public ResponseEntity<List<Project>> getAllProjects(@AuthenticationPrincipal Jwt jwt) {
         verifyGlobalAdmin(getEmailFromJwt(jwt));
         return ResponseEntity.ok(projectRepository.findAll());
+    }
+
+    @GetMapping("/stats")
+    public ResponseEntity<AdminStatsResponse> getAllStats(@AuthenticationPrincipal Jwt jwt) {
+        verifyGlobalAdmin(getEmailFromJwt(jwt));
+
+        long totalUsers = appUserRepository.count();
+        long totalProjects = projectRepository.count();
+        List<Task> allTasks = taskRepository.findAll();
+        long totalTasks = allTasks.size();
+
+        Map<String, Long> tasksByStatus = allTasks.stream()
+                .collect(java.util.stream.Collectors.groupingBy(Task::getStatus, java.util.stream.Collectors.counting()));
+
+        Map<String, Long> userTasks = allTasks.stream()
+                .filter(t -> t.getAssignedTo() != null)
+                .collect(java.util.stream.Collectors.groupingBy(Task::getAssignedTo, java.util.stream.Collectors.counting()));
+
+        List<AdminStatsResponse.UserTaskStat> userTaskStats = userTasks.entrySet().stream()
+                .map(e -> new AdminStatsResponse.UserTaskStat(e.getKey(), e.getValue()))
+                .collect(java.util.stream.Collectors.toList());
+
+        AdminStatsResponse stats = new AdminStatsResponse(totalUsers, totalProjects, totalTasks, tasksByStatus, userTaskStats);
+        return ResponseEntity.ok(stats);
     }
 }
